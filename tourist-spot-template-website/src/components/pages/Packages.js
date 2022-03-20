@@ -1,17 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import StarRatings from 'react-star-ratings';
+import { useStateValue } from '../../ContextAPI/StateProvider';
 import './Packages.css';
 
 import axios from '../../axiosUsers';
 
 export default function Services() {
   const [packages, setPackages] = useState(null);
+  const [, dispatch] = useStateValue();
+
+  const addToBasket = (addedPacket) => {
+    //dispatch the item into the Data Layer
+    dispatch({
+      type: 'ADD_TO_BASKET',
+      item: {
+        state: addedPacket.state,
+        image: addedPacket.image,
+        accomodation: addedPacket.accomodation,
+        days: addedPacket.days,
+        nights: addedPacket.nights,
+        price: addedPacket.price,
+        reviews: addedPacket.reviews,
+      },
+    });
+  };
 
   useEffect(() => {
     async function fetchPackages() {
       try {
         const response = await axios.get('/packages.json');
-        console.log(response.data);
         setPackages(response.data);
       } catch (error) {
         console.error(error);
@@ -48,7 +65,10 @@ export default function Services() {
                         <h3>
                           {packages[item].state}{' '}
                           <span style={{ marginLeft: '32px' }}>
-                            {packages[item].price}
+                            Rs.&nbsp;
+                            {packages[item].price.toLocaleString(
+                              navigator.language
+                            )}
                           </span>
                         </h3>
                         <div class="packages-para">
@@ -82,7 +102,10 @@ export default function Services() {
                           </p>
                         </div>
                         <div class="about-btn">
-                          <button class="about-view packages-btn">
+                          <button
+                            class="about-view packages-btn"
+                            onClick={() => addToBasket(packages[item])}
+                          >
                             book now
                           </button>
                         </div>

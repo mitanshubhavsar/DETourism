@@ -21,7 +21,7 @@ const reducer = (state, action) => {
       };
     case 'REMOVE_FROM_BASKET':
       const index = state.basket.findIndex(
-        (basketItem) => basketItem.id === action.id
+        (basketItem) => basketItem.state === action.state
       );
       let newBasket = [...state.basket];
 
@@ -29,7 +29,7 @@ const reducer = (state, action) => {
         newBasket.splice(index, 1);
       } else {
         console.warn(
-          `Cant remove product (id: ${action.id}) as its not in basket! `
+          `Cant remove product (id: ${action.state}) as its not in basket! `
         );
       }
 

@@ -87,6 +87,25 @@
   font-size: 12px;
 }
 
+.basketTotal_icon {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 70.5%;
+  top: 25%;
+  border-radius: 50%;
+  background: blue;
+  line-height: 65px;
+  text-align: center;
+}
+
+.basketTotal_value {
+  position: absolute;
+  font-size: 11px;
+  left: 71%;
+  top: 26%;
+}
+
 @media screen and (max-width: 960px) {
   .NavbarItems {
     position: relative;

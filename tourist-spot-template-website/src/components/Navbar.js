@@ -113,6 +113,12 @@ function Navbar() {
                     onClick={closeMobileMenu}
                   >
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    {basket.length !== 0 ? (
+                      <>
+                        <div className="basketTotal_icon"></div>
+                        <div className="basketTotal_value">{basket.length}</div>
+                      </>
+                    ) : null}
                   </Link>
                 </li>
               </>
