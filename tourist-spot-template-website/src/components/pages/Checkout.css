@@ -1,0 +1,64 @@
+.checkout_heading {
+  margin: 3rem;
+}
+
+.checkout_img {
+  margin-right: 50px;
+}
+
+.checkout_details {
+  margin: 20px;
+  text-transform: capitalize;
+}
+
+.checkout_container {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.checkout_card {
+  margin: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.removeButton_orders {
+  margin-left: 35px;
+  letter-spacing: 1.2px;
+  transition: 0.5s ease-in-out;
+}
+
+.removeOrder-btn {
+  height: 40px;
+  width: 170px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #fff;
+  text-transform: capitalize;
+  transition: 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00d8ff;
+  border: 1px solid #00d8ff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.removeOrder-btn:hover {
+  box-shadow: 0 5px 20px rgba(14, 15, 18, 0.3);
+}
+
+.checkout_details .checkout_title {
+  font-size: 1.5rem;
+  margin-bottom: 7px;
+}
+
+.checkout_details .checkout_info {
+  line-height: 35px;
+}
+
+.removeButton_orders .checkout_price {
+  font-size: 1.5rem;
+  margin-bottom: 60%;
+}

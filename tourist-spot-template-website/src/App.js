@@ -7,6 +7,8 @@ import Destinations from './components/pages/Destinations';
 import Packages from './components/pages/Packages';
 import ContactUs from './components/pages/ContactUs';
 import SignUp from './components/pages/SignUp';
+import Orders from './components/pages/Orders';
+import Checkout from './components/pages/Checkout';
 import { useStateValue } from './ContextAPI/StateProvider';
 import { auth } from './firebase';
 
@@ -48,6 +50,8 @@ function App() {
           <Route path="/destinations" component={Destinations} />
           <Route path="/contactus" component={ContactUs} />
           <Route path="/sign-up" component={SignUp} />
+          <Route path="/orders" component={Orders} />
+          <Route path="/checkout" component={Checkout} />
         </Switch>
       </Router>
       <script
@@ -65,6 +69,7 @@ function App() {
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"
       ></script>
+      <script src="https://use.fontawesome.com/f994cc1997.js"></script>
     </>
   );
 }

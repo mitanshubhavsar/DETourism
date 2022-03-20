@@ -95,6 +95,29 @@ function Navbar() {
                 Sign Up
               </Link>
             </li>
+            {user ? (
+              <>
+                <li>
+                  <Link
+                    to="/orders"
+                    className="nav-links"
+                    onClick={closeMobileMenu}
+                  >
+                    Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/checkout"
+                    className="nav-links"
+                    onClick={closeMobileMenu}
+                  >
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                  </Link>
+                </li>
+              </>
+            ) : null}
+
             <li>
               <Link
                 to="/"
