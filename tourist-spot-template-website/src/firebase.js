@@ -6,11 +6,12 @@ import 'firebase/compat/firestore';
 const firebaseConfig = {
   apiKey: 'AIzaSyB1FC_OjRiRUtZPpDaMzVDlEBJ8K8Mypo0',
   authDomain: 'tourism-26bdf.firebaseapp.com',
+  databaseURL: 'https://tourism-26bdf-default-rtdb.firebaseio.com',
   projectId: 'tourism-26bdf',
-  storageBucket: 'clone-2f9b0.appspot.com',
-  messagingSenderId: '1028323125561',
-  appId: '1:1028323125561:web:8d8c103b025190458c60e8',
-  measurementId: 'G-JS0EZR8F2W',
+  storageBucket: 'tourism-26bdf.appspot.com',
+  messagingSenderId: '863845805424',
+  appId: '1:863845805424:web:f5f99e61e39c2223c873b5',
+  measurementId: 'G-92D7F6YKS8',
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -6,8 +7,29 @@ import Destinations from './components/pages/Destinations';
 import Packages from './components/pages/Packages';
 import ContactUs from './components/pages/ContactUs';
 import SignUp from './components/pages/SignUp';
+import { useStateValue } from './ContextAPI/StateProvider';
+import { auth } from './firebase';
 
 function App() {
+  const [, dispatch] = useStateValue();
+  useEffect(() => {
+    //will only runs when the app component loads...
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        //the user just logged in/the user was logged in
+        dispatch({
+          type: 'SET_USER',
+          user: authUser,
+        });
+      } else {
+        dispatch({
+          type: 'SET_USER',
+          user: null,
+        });
+        //the user is logged out
+      }
+    });
+  }, [dispatch]);
   return (
     <>
       <head>

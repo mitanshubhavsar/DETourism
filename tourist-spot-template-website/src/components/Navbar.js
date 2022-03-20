@@ -1,13 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from './Button';
+import { useStateValue } from '../ContextAPI/StateProvider';
 import './Navbar.css';
+import { auth } from '../firebase';
 
 function Navbar() {
+  const history = useHistory();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
+  const [{ basket, user }] = useStateValue();
+
+  const handleAuthentication = () => {
+    if (user) {
+      auth.signOut();
+      history.push('/');
+    }
+  };
+
+  const signInSection = user ? (
+    <Button buttonStyle="btn--outline" onClick={handleAuthentication}>
+      Sign Out
+    </Button>
+  ) : (
+    <Link to="/sign-up">
+      <Button buttonStyle="btn--outline">Sign In</Button>
+    </Link>
+  );
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -74,8 +95,18 @@ function Navbar() {
                 Sign Up
               </Link>
             </li>
+            <li>
+              <Link
+                to="/"
+                className="nav-links greetUser"
+                onClick={closeMobileMenu}
+              >
+                <div>Hello</div>
+                <div>{user ? `${user.email}` : 'Guest'}</div>
+              </Link>
+            </li>
           </ul>
-          {button && <Button buttonStyle="btn--outline">SIGN IN</Button>}
+          {button && signInSection}
         </div>
       </nav>
     </>
