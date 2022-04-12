@@ -67,3 +67,11 @@
   margin: 25px;
   font-size: 1.5rem;
 }
+
+.checkout_proceed_btn {
+  margin: 25px;
+  padding: 4px 19px;
+  border-radius: 6px;
+  background: #000066;
+  color: beige;
+}

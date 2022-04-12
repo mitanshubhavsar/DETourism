@@ -1,5 +1,5 @@
 .order_heading {
-  margin: 3rem;
+  margin: 2rem;
 }
 
 .orders_img {
@@ -13,11 +13,7 @@
 
 .orders_container {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-
-.orders_card {
-  margin: 20px;
-  padding: 20px;
+  margin: 10px;
 }
 
 .orders_card {
@@ -43,4 +39,11 @@
 
 .orders_details .orders_info {
   line-height: 35px;
+}
+
+.order_total {
+  font-size: 1.4rem;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
 }

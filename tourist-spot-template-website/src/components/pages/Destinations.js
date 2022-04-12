@@ -24,7 +24,6 @@ export default function Products() {
     async function fetchDestinations() {
       try {
         axios.get('/destinations.json').then((response) => {
-          console.log(response.data);
           setDestinationData(response.data);
         });
       } catch (error) {

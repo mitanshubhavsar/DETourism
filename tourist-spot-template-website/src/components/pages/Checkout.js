@@ -1,17 +1,51 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import './Checkout.css';
 import StarRatings from 'react-star-ratings';
 import { useStateValue } from '../../ContextAPI/StateProvider';
 import { getBasketTotal } from '../../ContextAPI/reducer';
+import { db } from '../../firebase';
+import firebase from 'firebase/compat/app';
 
 function Checkout() {
-  const [{ basket }, dispatch] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
+  const history = useHistory();
+
+  const bookOrder = () => {
+    if (basket.length === 0 && getBasketTotal(basket) === 0) {
+      alert('Please add few items in basket!');
+    } else {
+      db.collection('users')
+        .doc(user?.uid)
+        .collection('orders')
+        .add({
+          basket: basket,
+          amount: getBasketTotal(basket),
+          orderedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+        .then(() => {
+          alert('Order Booked Successfully');
+          emptyTheBasket();
+          history.push('/');
+        })
+        .catch((error) => {
+          console.error('Error writing document: ', error);
+        });
+    }
+  };
 
   const removeFromBasket = (removedPackage) => {
     // remove the item from the basket
     dispatch({
       type: 'REMOVE_FROM_BASKET',
       state: removedPackage.state,
+    });
+  };
+
+  const emptyTheBasket = () => {
+    // remove the item from the basket
+    dispatch({
+      type: 'EMPTY_BASKET',
     });
   };
 
@@ -77,6 +111,9 @@ function Checkout() {
         Your Cart 's has total {basket.length} items with a Subtotal of{' '}
         {getBasketTotal(basket)}
       </div>
+      <button className="checkout_proceed_btn" onClick={bookOrder}>
+        Proceed to Pay
+      </button>
     </div>
   );
 }

@@ -11,13 +11,21 @@ function Navbar() {
   const [button, setButton] = useState(true);
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
-  const [{ basket, user }] = useStateValue();
+  const [{ basket, user }, dispatch] = useStateValue();
+
+  const emptyTheBasket = () => {
+    // remove the item from the basket
+    dispatch({
+      type: 'EMPTY_BASKET',
+    });
+  };
 
   const handleAuthentication = () => {
     if (user) {
       auth.signOut();
       history.push('/');
     }
+    emptyTheBasket();
   };
 
   const signInSection = user ? (
