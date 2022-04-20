@@ -1,29 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import './Destinations.css';
-import StarRatings from 'react-star-ratings';
-import axios from '../../axiosUsers';
+import React, { useState, useEffect } from "react";
+import "./Destinations.css";
+import StarRatings from "react-star-ratings";
+import axios from "../../axiosUsers";
 
 export default function Products() {
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
   const [destinationData, setDestinationData] = useState(null);
   const [selectedDestinationData, setSelectedDestinationData] = useState(null);
+  const [searchClicked, setSearchClicked] = useState(false);
   //let selectedDestinationData = null;
 
-  const checkDestinations = () => {
-    console.log(selectedCity);
-    console.log(selectedState);
-    console.log(destinationData[selectedState]);
+  useEffect(() => {
+    if (selectedCity !== null && searchClicked === true) {
+      window.scroll({
+        top: 550,
+        behavior: "smooth",
+      });
+    }
 
-    setSelectedDestinationData(destinationData[selectedState][selectedCity]);
-    //selectedDestinationData = destinationData[selectedState][selectedCity];
-    console.log(selectedDestinationData);
+    settingSearchClicked();
+  }, [selectedCity, searchClicked]);
+
+  const settingSearchClicked = () => {
+    setTimeout(() => {
+      setSearchClicked(false);
+    }, 3000);
   };
 
   useEffect(() => {
     async function fetchDestinations() {
       try {
-        axios.get('/destinations.json').then((response) => {
+        axios.get("/destinations.json").then((response) => {
           setDestinationData(response.data);
         });
       } catch (error) {
@@ -35,7 +43,7 @@ export default function Products() {
 
   return (
     <>
-      <section class="travel-box">
+      <section class="travel-box " style={{ marginTop: "200px" }}>
         <div class="container">
           <div class="row">
             <div class="col-md-12">
@@ -71,7 +79,7 @@ export default function Products() {
                                     setSelectedState(e.target.value)
                                   }
                                 >
-                                  <option value="default">
+                                  <option selected="true" disabled="disabled">
                                     enter your destination state
                                   </option>
                                   {destinationData &&
@@ -93,7 +101,7 @@ export default function Products() {
                                     setSelectedCity(e.target.value)
                                   }
                                 >
-                                  <option value="default">
+                                  <option selected="true" disabled="disabled">
                                     enter your destination city
                                   </option>
                                   {selectedState &&
@@ -114,7 +122,12 @@ export default function Products() {
                           <div class="about-btn travel-mrt-0 pull-right">
                             <button
                               class="about-view travel-btn"
-                              onClick={checkDestinations}
+                              onClick={() => {
+                                setSearchClicked(true);
+                                setSelectedDestinationData(
+                                  destinationData[selectedState][selectedCity]
+                                );
+                              }}
                             >
                               search
                             </button>
@@ -134,7 +147,7 @@ export default function Products() {
         <div class="container">
           <div class="blog-details">
             <div class="gallary-header text-center">
-              <h2 style={{ marginBottom: '16px' }}>Available Destinations</h2>
+              <h2 style={{ marginBottom: "16px" }}>Available Destinations</h2>
               <h5>
                 Travel these wonderful destinations with great joyful
                 experience!
@@ -164,8 +177,8 @@ export default function Products() {
                               <div class="caption_rating">
                                 <div
                                   style={{
-                                    marginRight: '11px',
-                                    fontFamily: 'sans-serif',
+                                    marginRight: "11px",
+                                    fontFamily: "sans-serif",
                                   }}
                                 >
                                   Ratings:
@@ -182,7 +195,7 @@ export default function Products() {
 
                               <div class="blog-txt-review">
                                 {selectedDestinationData[item].reviews}
-                                {'   '} review
+                                {"   "} review
                               </div>
                               <div class="blog-txt-about">
                                 {selectedDestinationData[item].about}

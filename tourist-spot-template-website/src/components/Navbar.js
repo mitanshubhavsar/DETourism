@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { Button } from './Button';
-import { useStateValue } from '../ContextAPI/StateProvider';
-import './Navbar.css';
-import { auth } from '../firebase';
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Button } from "./Button";
+import { useStateValue } from "../ContextAPI/StateProvider";
+import "./Navbar.css";
+import { auth } from "../firebase";
 
 function Navbar() {
   const history = useHistory();
@@ -16,14 +16,14 @@ function Navbar() {
   const emptyTheBasket = () => {
     // remove the item from the basket
     dispatch({
-      type: 'EMPTY_BASKET',
+      type: "EMPTY_BASKET",
     });
   };
 
   const handleAuthentication = () => {
     if (user) {
       auth.signOut();
-      history.push('/');
+      history.push("/");
     }
     emptyTheBasket();
   };
@@ -50,7 +50,7 @@ function Navbar() {
     showButton();
   }, []);
 
-  window.addEventListener('resize', showButton);
+  window.addEventListener("resize", showButton);
   return (
     <>
       <nav className="navbar">
@@ -59,9 +59,9 @@ function Navbar() {
             TRVL <i className="fab fa-typo3"></i>
           </Link>
           <div className="menu-icon" onClick={handleClick}>
-            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+            <i className={click ? "fas fa-times" : "fas fa-bars"} />
           </div>
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li>
               <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 Home
@@ -114,23 +114,23 @@ function Navbar() {
                     Orders
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    to="/checkout"
-                    className="nav-links"
-                    onClick={closeMobileMenu}
-                  >
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    {basket.length !== 0 ? (
-                      <>
-                        <div className="basketTotal_icon"></div>
-                        <div className="basketTotal_value">{basket.length}</div>
-                      </>
-                    ) : null}
-                  </Link>
-                </li>
               </>
             ) : null}
+            <li>
+              <Link
+                to="/checkout"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                {basket.length !== 0 ? (
+                  <>
+                    <div className="basketTotal_icon"></div>
+                    <div className="basketTotal_value">{basket.length}</div>
+                  </>
+                ) : null}
+              </Link>
+            </li>
 
             <li>
               <Link
@@ -139,7 +139,7 @@ function Navbar() {
                 onClick={closeMobileMenu}
               >
                 <div>Hello</div>
-                <div>{user ? `${user.email}` : 'Guest'}</div>
+                <div>{user ? `${user.email}` : "Guest"}</div>
               </Link>
             </li>
           </ul>

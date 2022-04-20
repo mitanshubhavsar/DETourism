@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import './Orders.css';
-import img1 from '../../assets/images/agraFort.jpg';
-import StarRatings from 'react-star-ratings';
-import { db } from '../../firebase';
-import axios from '../../axiosUsers';
-import { useStateValue } from '../../ContextAPI/StateProvider';
+import React, { useEffect, useState } from "react";
+import "./Orders.css";
+import img1 from "../../assets/images/agraFort.jpg";
+import StarRatings from "react-star-ratings";
+import { db } from "../../firebase";
+import axios from "../../axiosUsers";
+import { useStateValue } from "../../ContextAPI/StateProvider";
 
 function Orders() {
-  const [{ basket, user }] = useStateValue();
+  const [{ basket, user, tourInfo, hotelsInfo }] = useStateValue();
   const [orderData, setOrderData] = useState(null);
 
   const items = [];
@@ -15,9 +15,10 @@ function Orders() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        db.collection('users')
+        db.collection("users")
           .doc(user.uid)
-          .collection('orders')
+          .collection("orders")
+          .orderBy("orderedAt", "desc")
           .onSnapshot((querySnapShot) => {
             querySnapShot.forEach((doc) => {
               items.push(doc.data());
@@ -29,6 +30,11 @@ function Orders() {
       }
     }
     fetchOrders();
+  }, []);
+
+  useEffect(() => {
+    console.log(tourInfo);
+    console.log(hotelsInfo);
   }, []);
 
   return (
@@ -56,8 +62,8 @@ function Orders() {
                     <div className="orders_details">
                       <div className="orders_title">{des.state}</div>
                       <div className="orders_info">
-                        <div style={{ display: 'flex' }}>
-                          <div style={{ marginRight: '27px' }}>
+                        <div style={{ display: "flex" }}>
+                          <div style={{ marginRight: "27px" }}>
                             {des.days} Days {des.nights} Nights
                           </div>
                           <div>5 Star Accomodation</div>
@@ -76,7 +82,7 @@ function Orders() {
                       </div>
                       <div className="removeButton_orders">
                         <div className="orders_price">
-                          Rs.&nbsp;{' '}
+                          Rs.&nbsp;{" "}
                           {des.price.toLocaleString(navigator.language)}
                         </div>
                       </div>

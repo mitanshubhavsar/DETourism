@@ -1,51 +1,56 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import './Checkout.css';
-import StarRatings from 'react-star-ratings';
-import { useStateValue } from '../../ContextAPI/StateProvider';
-import { getBasketTotal } from '../../ContextAPI/reducer';
-import { db } from '../../firebase';
-import firebase from 'firebase/compat/app';
+import React from "react";
+import { useHistory } from "react-router-dom";
+import "./Checkout.css";
+import StarRatings from "react-star-ratings";
+import { useStateValue } from "../../ContextAPI/StateProvider";
+import { getBasketTotal } from "../../ContextAPI/reducer";
+import { db } from "../../firebase";
+import firebase from "firebase/compat/app";
+import TravelInfoModel from "../TravelInfoModel";
 
 function Checkout() {
   const [{ basket, user }, dispatch] = useStateValue();
   const history = useHistory();
 
   const bookOrder = () => {
-    if (basket.length === 0 && getBasketTotal(basket) === 0) {
-      alert('Please add few items in basket!');
-    } else {
-      db.collection('users')
-        .doc(user?.uid)
-        .collection('orders')
-        .add({
-          basket: basket,
-          amount: getBasketTotal(basket),
-          orderedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        })
-        .then(() => {
-          alert('Order Booked Successfully');
-          emptyTheBasket();
-          history.push('/');
-        })
-        .catch((error) => {
-          console.error('Error writing document: ', error);
-        });
-    }
+    // if (user) {
+    //   if (basket.length === 0 && getBasketTotal(basket) === 0) {
+    //     alert("Please add few items in basket!");
+    //   } else {
+    //     db.collection("users")
+    //       .doc(user?.uid)
+    //       .collection("orders")
+    //       .add({
+    //         basket: basket,
+    //         amount: getBasketTotal(basket),
+    //         orderedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //       })
+    //       .then(() => {
+    //         alert("Order Booked Successfully");
+    //         emptyTheBasket();
+    //         history.push("/");
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error writing document: ", error);
+    //       });
+    //   }
+    // } else {
+    //   alert("Please Login/Signup before ordering");
+    //   history.push("/sign-up");
+    // }
   };
 
   const removeFromBasket = (removedPackage) => {
     // remove the item from the basket
     dispatch({
-      type: 'REMOVE_FROM_BASKET',
+      type: "REMOVE_FROM_BASKET",
       state: removedPackage.state,
     });
   };
 
   const emptyTheBasket = () => {
-    // remove the item from the basket
     dispatch({
-      type: 'EMPTY_BASKET',
+      type: "EMPTY_BASKET",
     });
   };
 
@@ -54,8 +59,9 @@ function Checkout() {
       <div className="checkout_heading">
         <h3>Your Cart</h3>
       </div>
+      <TravelInfoModel />
       {basket.length === 0 ? (
-        <div style={{ fontSize: '30px' }}>Your Cart is Empty</div>
+        <div style={{ fontSize: "30px" }}>Your Cart is Empty</div>
       ) : null}
       <div className="checkout_container">
         {basket &&
@@ -75,8 +81,8 @@ function Checkout() {
                 <div className="checkout_details">
                   <div className="checkout_title">{basket[i].state}</div>
                   <div className="checkout_info">
-                    <div style={{ display: 'flex' }}>
-                      <div style={{ marginRight: '27px' }}>
+                    <div style={{ display: "flex" }}>
+                      <div style={{ marginRight: "27px" }}>
                         {basket[i].days} Days {basket[i].nights} Nights
                       </div>
                       <div>{basket[i].accomodation} Star Accomodation</div>
@@ -108,7 +114,7 @@ function Checkout() {
           })}
       </div>
       <div className="checkout_SubTotal">
-        Your Cart 's has total {basket.length} items with a Subtotal of{' '}
+        Your Cart 's has total {basket.length} items with a Subtotal of{" "}
         {getBasketTotal(basket)}
       </div>
       <button className="checkout_proceed_btn" onClick={bookOrder}>
