@@ -14,6 +14,7 @@ const customStyles = {
     top: "15%",
     left: "15%",
     right: "15%",
+    //overflow: "none",
     // right: "auto",
     // bottom: "auto",
     // marginRight: "-50%",
@@ -21,10 +22,9 @@ const customStyles = {
   },
 };
 
-export default function TravelInfoModel() {
+export default function TravelInfoModel(props) {
   const [{ basket, user }, dispatch] = useStateValue();
   const [hotelsData, setHotelsData] = useState(null);
-  const [selectedHotelsData, setSelectedHotelsData] = useState(null);
 
   const getTourInfo = (
     startTourDate,
@@ -80,19 +80,12 @@ export default function TravelInfoModel() {
             checkoutDate: checkOutHotelsDate[i],
             hotelDuration: selectedHotelDuration[i],
             hotelMembers: selectedHotelMembers[i],
+            availableHotels: hotelsData[basket[i].state],
           },
         });
       }
-      closeModal();
+      props.closeModal();
     }
-  };
-
-  const filterHotels = () => {
-    const selectedHotels = [];
-    basket.forEach((element) => {
-      selectedHotels.push(element.state);
-    });
-    setSelectedHotelsData(selectedHotels);
   };
 
   useEffect(() => {
@@ -107,7 +100,6 @@ export default function TravelInfoModel() {
     fetchHotels();
   }, []);
 
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
 
   const [startTourDate, setStartTourDate] = useState([]);
@@ -172,25 +164,17 @@ export default function TravelInfoModel() {
     setSelectedHotelMembers(newArray);
   };
 
-  function openModal() {
-    setIsOpen(true);
-    filterHotels();
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={props.modalIsOpen}
+        onRequestClose={props.closeModal}
         style={customStyles}
         contentLabel="Example Modal"
       >
-        <button onClick={closeModal}>close</button>
+        <div className="travelinfo_mod_close_btn" onClick={props.closeModal}>
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
         <Tabs selectedIndex={tabIndex}>
           <TabList className="model-tabs">
             <Tab onClick={() => setTabIndex(0)}>
@@ -228,7 +212,7 @@ export default function TravelInfoModel() {
               </div>
             </div>
 
-            {selectedHotelsData?.map((ele) => {
+            {props.selectedHotelsData?.map((ele) => {
               return (
                 <>
                   <div className="row justify-content-center">
@@ -293,7 +277,7 @@ export default function TravelInfoModel() {
               <div className="row">
                 <div class="single-tab-select-box">
                   <h2 className="mb-5">
-                    Select a State to checkout its Hotels :
+                    Select a State to check out its Hotels :
                   </h2>
                 </div>
               </div>

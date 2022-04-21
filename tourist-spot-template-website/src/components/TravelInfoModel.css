@@ -88,7 +88,7 @@
 /*===ab-select-box===*/
 .tab-para {
   padding: 43px 42px 24px;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .single-tab-select-box h2 {
   color: #565a5c;
@@ -347,4 +347,11 @@
 .Avai_hotel_heading {
   font-weight: 600 !important;
   font-size: 1.4rem !important;
+}
+
+.travelinfo_mod_close_btn {
+  font-size: 23px;
+  display: flex;
+  justify-content: end;
+  margin-bottom: 12px;
 }

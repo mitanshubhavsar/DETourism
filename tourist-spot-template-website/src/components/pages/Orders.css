@@ -38,7 +38,7 @@
 }
 
 .orders_details .orders_info {
-  line-height: 35px;
+  line-height: 28px;
 }
 
 .order_total {
@@ -46,4 +46,39 @@
   padding: 28px;
   display: flex;
   justify-content: space-between;
+}
+
+.Tour_info_orders {
+  line-height: 28px;
+}
+
+.Tour_info_orders .Tour_info_orders_heading {
+  font-size: 1.2rem;
+}
+
+.Tour_info_orders .Tour_info_dates {
+  display: flex;
+}
+
+.Tour_info_orders .Tour_info_members {
+  display: flex;
+}
+
+.order_info_Ava_hotels {
+  line-height: 25px;
+}
+
+.order_info_Ava_hotels .order_info_Ava_hotels_heading {
+  font-size: 1.2rem;
+}
+
+.order_info_Ava_hotels .ava_hotels {
+  display: flex;
+  align-items: center;
+}
+
+.orders_details .order_package_price {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
 }

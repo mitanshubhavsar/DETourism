@@ -42,7 +42,7 @@
   align-items: center;
   background: #00d8ff;
   border: 1px solid #00d8ff;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .removeOrder-btn:hover {
@@ -74,4 +74,17 @@
   border-radius: 6px;
   background: #000066;
   color: beige;
+}
+
+.checkout_editbtn {
+  padding: 5px 20px;
+  background: #53c653;
+  border-radius: 6px;
+  color: #000033;
+  margin: 5px;
+}
+
+.checkout_editheading {
+  font-size: 1.3rem;
+  margin-right: 10px;
 }

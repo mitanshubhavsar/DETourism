@@ -51,11 +51,21 @@ const reducer = (state, action) => {
         ...state,
         tourInfo: [...state.tourInfo, action.tourInfo],
       };
+    case "EMPTY_TOURINFO":
+      return {
+        ...state,
+        tourInfo: [],
+      };
 
     case "SET_HOTELS":
       return {
         ...state,
         hotelsInfo: [...state.hotelsInfo, action.hotelsInfo],
+      };
+    case "EMPTY_HOTELSINFO":
+      return {
+        ...state,
+        hotelsInfo: [],
       };
 
     default:
