@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import StarRatings from 'react-star-ratings';
-import { useStateValue } from '../../ContextAPI/StateProvider';
-import './Packages.css';
+import React, { useEffect, useState } from "react";
+import StarRatings from "react-star-ratings";
+import MoreInfoModel from "../MoreInfoModel";
+import { useStateValue } from "../../ContextAPI/StateProvider";
+import "./Packages.css";
 
-import axios from '../../axiosUsers';
+import axios from "../../axiosUsers";
 
 export default function Services() {
   const [packages, setPackages] = useState(null);
+  const [hotelState, setHotelState] = useState("Gujarat");
+  const [modalIsOpen, setIsOpen] = useState(false);
   const [, dispatch] = useStateValue();
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const addToBasket = (addedPacket) => {
     //dispatch the item into the Data Layer
     dispatch({
-      type: 'ADD_TO_BASKET',
+      type: "ADD_TO_BASKET",
       item: {
         state: addedPacket.state,
         image: addedPacket.image,
@@ -28,7 +39,7 @@ export default function Services() {
   useEffect(() => {
     async function fetchPackages() {
       try {
-        const response = await axios.get('/packages.json');
+        const response = await axios.get("/packages.json");
         setPackages(response.data);
       } catch (error) {
         console.error(error);
@@ -47,6 +58,12 @@ export default function Services() {
             Journey !
           </h3>
         </div>
+        <MoreInfoModel
+          modalIsOpen={modalIsOpen}
+          openModal={openModal}
+          closeModal={closeModal}
+          hotelState={hotelState}
+        />
         <div class="packages-content">
           <div class="row">
             {packages &&
@@ -63,8 +80,8 @@ export default function Services() {
                       />
                       <div class="single-package-item-txt">
                         <h3>
-                          {packages[item].state}{' '}
-                          <span style={{ marginLeft: '32px' }}>
+                          {packages[item].state}{" "}
+                          <span style={{ marginLeft: "32px" }}>
                             Rs.&nbsp;
                             {packages[item].price.toLocaleString(
                               navigator.language
@@ -74,8 +91,8 @@ export default function Services() {
                         <div class="packages-para">
                           <p>
                             <span>
-                              <i class="fa fa-angle-right"></i>{' '}
-                              {packages[item].days} days {packages[item].nights}{' '}
+                              <i class="fa fa-angle-right"></i>{" "}
+                              {packages[item].days} days {packages[item].nights}{" "}
                               nights
                             </span>
                             <i class="fa fa-angle-right"></i> 5 star
@@ -101,12 +118,23 @@ export default function Services() {
                             <span>{packages[item].reviews} review</span>
                           </p>
                         </div>
-                        <div class="about-btn">
+                        <div class="packages_about-btn">
                           <button
                             class="about-view packages-btn"
                             onClick={() => addToBasket(packages[item])}
                           >
                             book now
+                          </button>
+                        </div>
+                        <div class="packages_moreinfo-btn">
+                          <button
+                            class="about-view packages-btn pck_moreinfo_btn"
+                            onClick={() => {
+                              setHotelState(packages[item].state);
+                              openModal();
+                            }}
+                          >
+                            more info
                           </button>
                         </div>
                       </div>

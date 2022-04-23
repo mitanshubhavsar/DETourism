@@ -35,7 +35,6 @@ export default function TravelInfoModel(props) {
     if (
       startTourDate.length !== basket.length ||
       endTourDate.length !== basket.length ||
-      selectedTourDuration.length !== basket.length ||
       selectedTourMembers.length !== basket.length
     ) {
       alert("Please enter all Tour Information details");
@@ -48,44 +47,26 @@ export default function TravelInfoModel(props) {
             destination: basket[i].state,
             startTour: startTourDate[i],
             endTour: endTourDate[i],
-            TourDuration: selectedTourDuration[i],
+            //TourDuration: selectedTourDuration[i],
             TourMembers: selectedTourMembers[i],
           },
         });
       }
     }
+    props.closeModal();
   };
 
-  const getHotelInfo = (
-    checkInHotelsDate,
-    checkOutHotelsDate,
-    selectedHotelDuration,
-    selectedHotelMembers
-  ) => {
-    if (
-      checkInHotelsDate.length !== basket.length ||
-      checkOutHotelsDate.length !== basket.length ||
-      selectedHotelDuration.length !== basket.length ||
-      selectedHotelMembers.length !== basket.length
-    ) {
-      alert("Please enter all Hotel Information details");
-      setTabIndex(3);
-    } else {
-      for (let i = 0; i < basket.length; i++) {
-        dispatch({
-          type: "SET_HOTELS",
-          hotelsInfo: {
-            destination: basket[i].state,
-            checkInDate: checkInHotelsDate[i],
-            checkoutDate: checkOutHotelsDate[i],
-            hotelDuration: selectedHotelDuration[i],
-            hotelMembers: selectedHotelMembers[i],
-            availableHotels: hotelsData[basket[i].state],
-          },
-        });
-      }
-      props.closeModal();
+  const getHotelInfo = () => {
+    for (let i = 0; i < basket.length; i++) {
+      dispatch({
+        type: "SET_HOTELS",
+        hotelsInfo: {
+          destination: basket[i].state,
+          availableHotels: hotelsData[basket[i].state],
+        },
+      });
     }
+    props.closeModal();
   };
 
   useEffect(() => {
@@ -107,13 +88,6 @@ export default function TravelInfoModel(props) {
   const [selectedTourDuration, setSelectedTourDuration] = useState([]);
   const [selectedTourMembers, setSelectedTourMembers] = useState([]);
 
-  const [checkInHotelsDate, setCheckInHotelsDate] = useState([]);
-  const [checkOutHotelsDate, setCheckOutHotelsDate] = useState([]);
-  const [selectedHotelDuration, setSelectedHotelDuration] = useState([]);
-  const [selectedHotelMembers, setSelectedHotelMembers] = useState([]);
-
-  const [exploreStateHotels, setExploreStateHotels] = useState("Gujarat");
-
   //Setting for Tour
   const settingStartTourDate = (date, i) => {
     const newArray = [...startTourDate];
@@ -125,43 +99,27 @@ export default function TravelInfoModel(props) {
     const newArray = [...endTourDate];
     newArray[i] = date;
     setEndTourDate(newArray);
+    //gettingCalculatedDuration(i);
   };
 
-  const settingTourDuration = (duration, i) => {
-    const newArray = [...selectedTourDuration];
-    newArray[i] = duration;
-    setSelectedTourDuration(newArray);
+  const gettingCalculatedDuration = (i) => {
+    if (endTourDate[i] !== null && startTourDate[i] !== null) {
+      const newArray = [...selectedTourDuration];
+      console.log(new Date(endTourDate[i]));
+      console.log(new Date(startTourDate[i]));
+      //console.log(new Date(endTourDate[i] - startTourDate[i]));
+      //newArray[i] = new Date(endTourDate[i] - startTourDate[i]).getDate();
+
+      console.log(newArray);
+      setSelectedTourDuration(newArray);
+      //return new Date(endTourDate[i] - startTourDate[i]);
+    }
   };
 
   const settingTourMembers = (members, i) => {
     const newArray = [...selectedTourMembers];
     newArray[i] = members;
     setSelectedTourMembers(newArray);
-  };
-
-  //setting for Hotels
-  const settingCheckInHotelsDate = (date, i) => {
-    const newArray = [...checkInHotelsDate];
-    newArray[i] = date;
-    setCheckInHotelsDate(newArray);
-  };
-
-  const settingCheckOutHotelsDate = (date, i) => {
-    const newArray = [...checkOutHotelsDate];
-    newArray[i] = date;
-    setCheckOutHotelsDate(newArray);
-  };
-
-  const settingHotelsDuration = (duration, i) => {
-    const newArray = [...selectedHotelDuration];
-    newArray[i] = duration;
-    setSelectedHotelDuration(newArray);
-  };
-
-  const settingHotelsMembers = (members, i) => {
-    const newArray = [...selectedHotelMembers];
-    newArray[i] = members;
-    setSelectedHotelMembers(newArray);
   };
 
   return (
@@ -185,20 +143,8 @@ export default function TravelInfoModel(props) {
             </Tab>
             <Tab onClick={() => setTabIndex(1)}>
               <div className="model-tabs-panel">
-                <i class="fa fa-search mr-2" aria-hidden="true"></i>
-                Explore
-              </div>
-            </Tab>
-            <Tab onClick={() => setTabIndex(2)}>
-              <div className="model-tabs-panel">
                 <i class="fa fa-tree mr-2"></i>
                 Tours
-              </div>
-            </Tab>
-            <Tab onClick={() => setTabIndex(3)}>
-              <div className="model-tabs-panel">
-                <i class="fa fa-building mr-2"></i>
-                hotels
               </div>
             </Tab>
           </TabList>
@@ -272,94 +218,7 @@ export default function TravelInfoModel(props) {
               );
             })}
           </TabPanel>
-          <TabPanel>
-            <div class="tab-para">
-              <div className="row">
-                <div class="single-tab-select-box">
-                  <h2 className="mb-5">
-                    Select a State to check out its Hotels :
-                  </h2>
-                </div>
-              </div>
 
-              <div class="row">
-                <div class="col-lg-4 col-md-5 col-sm-6">
-                  <div class="single-tab-select-box">
-                    <h2>Select State:</h2>
-                    <div class="travel-select-icon">
-                      <select
-                        class="form-control "
-                        value={exploreStateHotels}
-                        onChange={(e) => setExploreStateHotels(e.target.value)}
-                      >
-                        <option selected="true" disabled="disabled">
-                          Enter State
-                        </option>
-                        {hotelsData &&
-                          Object.keys(hotelsData).map((item, i) => {
-                            return <option value={item}>{item}</option>;
-                          })}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {hotelsData &&
-                Object.keys(hotelsData[exploreStateHotels]).map((item) => {
-                  return (
-                    <div className="hotels_card">
-                      <div className="hotels_img">
-                        <img
-                          src={
-                            require(`../assets/images/hotels/${hotelsData[exploreStateHotels][item].image}`)
-                              .default
-                          }
-                          alt="hotels-place"
-                          height="155px"
-                          width="230px"
-                        />
-                      </div>
-                      <div className="hotels_details">
-                        <div className="hotels_title">
-                          <div className="hotels_name">
-                            {hotelsData[exploreStateHotels][item].name}
-                          </div>
-                          <div className="hotels_city ml-5">
-                            {hotelsData[exploreStateHotels][item].city}
-                          </div>
-                        </div>
-                        <div className="hotelss_info">
-                          <div>
-                            {hotelsData[exploreStateHotels][item].intro}
-                          </div>
-                          <div style={{ marginTop: "10px" }}>
-                            <i class="fa fa-angle-right mr-2"></i>
-                            Amenities: <br />
-                            {hotelsData[exploreStateHotels][item].amenities}
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <i class="fa fa-angle-right mr-2"></i>
-                            <div className="mr-3">Rating:</div>
-                            <StarRatings
-                              rating={
-                                hotelsData[exploreStateHotels][item].rating
-                              }
-                              starRatedColor="yellow"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="24px"
-                              starSpacing="1px"
-                              className="orders_info"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
-          </TabPanel>
           <TabPanel>
             <div class="tab-para">
               {basket.map((item, i) => {
@@ -381,6 +240,7 @@ export default function TravelInfoModel(props) {
                               selected={startTourDate[i]}
                               onChange={(date) => settingStartTourDate(date, i)}
                               className="datepicker_style"
+                              minDate={new Date()}
                             />
                           </div>
                         </div>
@@ -394,6 +254,9 @@ export default function TravelInfoModel(props) {
                               selected={endTourDate[i]}
                               onChange={(date) => settingEndTourDate(date, i)}
                               className="datepicker_style"
+                              minDate={
+                                startTourDate[i] ? startTourDate[i] : new Date()
+                              }
                             />
                           </div>
                         </div>
@@ -402,24 +265,21 @@ export default function TravelInfoModel(props) {
                       <div class="col-lg-3 col-md-2 col-sm-5">
                         <div class="single-tab-select-box">
                           <h2>duration</h2>
-                          <div class="travel-select-icon">
-                            <select
+                          <div className="travel-input-number">
+                            <input
                               class="form-control "
-                              value={selectedTourDuration[i]}
-                              onChange={(e) =>
-                                settingTourDuration(e.target.value, i)
-                              }
-                            >
-                              <option selected="true" disabled="disabled">
-                                Duration
-                              </option>
-                              <option value="5">5 days</option>
-
-                              <option value="10">10 days</option>
-
-                              <option value="15">15 days</option>
-                              <option value="20">20 days</option>
-                            </select>
+                              //value={selectedTourDuration[i]}
+                              value={new Date(
+                                endTourDate[i] - startTourDate[i]
+                              ).getDate()}
+                              //value={selectedTourDuration[i]}
+                              // onChange={(e) =>
+                              //   settingTourDuration(e.target.value, i)
+                              // }
+                              type="number"
+                              min="2"
+                              max="180"
+                            />
                           </div>
                         </div>
                       </div>
@@ -427,132 +287,17 @@ export default function TravelInfoModel(props) {
                       <div class="col-lg-3 col-md-2 col-sm-5">
                         <div class="single-tab-select-box">
                           <h2>members</h2>
-                          <div class="travel-select-icon">
-                            <select
+                          <div className="travel-input-number">
+                            <input
                               class="form-control "
                               value={selectedTourMembers[i]}
                               onChange={(e) =>
                                 settingTourMembers(e.target.value, i)
                               }
-                            >
-                              <option selected="true" disabled="disabled">
-                                Members
-                              </option>
-                              <option value="1">1</option>
-
-                              <option value="2">2</option>
-
-                              <option value="4">4</option>
-                              <option value="8">8</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                );
-              })}
-
-              <div class="clo-sm-7">
-                <div class="about-btn travel-mrt-0 pull-right">
-                  <button
-                    class="about-view travel-btn"
-                    onClick={() => setTabIndex(3)}
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel>
-            <div class="tab-para">
-              {basket.map((item, i) => {
-                return (
-                  <>
-                    <div className="row">
-                      <div class="single-tab-select-box">
-                        <h2 className="mb-4">
-                          Your Destination : {item.state}
-                        </h2>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="single-tab-select-box">
-                          <h2>check in</h2>
-                          <div class="travel-check-icon">
-                            <DatePicker
-                              selected={checkInHotelsDate[i]}
-                              onChange={(date) =>
-                                settingCheckInHotelsDate(date, i)
-                              }
-                              className="datepicker_style"
+                              type="number"
+                              min="1"
+                              max="50"
                             />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="single-tab-select-box">
-                          <h2>check out</h2>
-                          <div class="travel-check-icon">
-                            <DatePicker
-                              selected={checkOutHotelsDate[i]}
-                              onChange={(date) =>
-                                settingCheckOutHotelsDate(date, i)
-                              }
-                              className="datepicker_style"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3 col-md-2 col-sm-5">
-                        <div class="single-tab-select-box">
-                          <h2>duration</h2>
-                          <div class="travel-select-icon">
-                            <select
-                              class="form-control "
-                              value={selectedHotelDuration[i]}
-                              onChange={(e) =>
-                                settingHotelsDuration(e.target.value, i)
-                              }
-                            >
-                              <option selected="true" disabled="disabled">
-                                Duration
-                              </option>
-                              <option value="5">5</option>
-                              <option value="10">10</option>
-
-                              <option value="15">15</option>
-                              <option value="20">20</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-3 col-md-2 col-sm-5">
-                        <div class="single-tab-select-box">
-                          <h2>members</h2>
-                          <div class="travel-select-icon">
-                            <select
-                              class="form-control "
-                              value={selectedHotelMembers[i]}
-                              onChange={(e) =>
-                                settingHotelsMembers(e.target.value, i)
-                              }
-                            >
-                              <option selected="true" disabled="disabled">
-                                Members
-                              </option>
-                              <option value="1">1</option>
-
-                              <option value="2">2</option>
-
-                              <option value="4">4</option>
-                              <option value="8">8</option>
-                            </select>
                           </div>
                         </div>
                       </div>
@@ -566,17 +311,12 @@ export default function TravelInfoModel(props) {
                   <button
                     class="about-view travel-btn"
                     onClick={() => {
+                      getHotelInfo();
                       getTourInfo(
                         startTourDate,
                         endTourDate,
                         selectedTourDuration,
                         selectedTourMembers
-                      );
-                      getHotelInfo(
-                        checkInHotelsDate,
-                        checkOutHotelsDate,
-                        selectedHotelDuration,
-                        selectedHotelMembers
                       );
                     }}
                   >

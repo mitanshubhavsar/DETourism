@@ -28,6 +28,15 @@ export default function Products() {
     }, 3000);
   };
 
+  const settingDestinationData = () => {
+    if (selectedState !== null && selectedCity !== null) {
+      setSearchClicked(true);
+      setSelectedDestinationData(destinationData[selectedState][selectedCity]);
+    } else {
+      alert("please enter the state or city!");
+    }
+  };
+
   useEffect(() => {
     async function fetchDestinations() {
       try {
@@ -122,12 +131,7 @@ export default function Products() {
                           <div class="about-btn travel-mrt-0 pull-right">
                             <button
                               class="about-view travel-btn"
-                              onClick={() => {
-                                setSearchClicked(true);
-                                setSelectedDestinationData(
-                                  destinationData[selectedState][selectedCity]
-                                );
-                              }}
+                              onClick={() => settingDestinationData()}
                             >
                               search
                             </button>

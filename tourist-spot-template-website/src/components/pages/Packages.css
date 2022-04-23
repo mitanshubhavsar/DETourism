@@ -10,7 +10,7 @@
   margin-bottom: 30px;
   padding-bottom: 20px;
   background: white;
-  height: 495px;
+  height: 640px;
   box-shadow: 0 0 30px rgba(0, 34, 102, 0.3);
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
@@ -34,12 +34,12 @@
   font-size: 20px;
   color: #565a5c;
   font-weight: 500;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   padding: 20px 0;
 }
 .single-package-item h3:after {
   position: absolute;
-  content: ' ';
+  content: " ";
   bottom: 0;
   left: 0;
   width: 100%;
@@ -53,7 +53,7 @@
 .packages-para p {
   font-size: 14px;
   color: #aaa;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin-bottom: 15px;
 }
 .packages-para p span {
@@ -68,7 +68,7 @@
   margin-left: 20px;
   font-size: 14px;
   color: #aaa;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   text-transform: capitalize;
 }
 .about-view.packages-btn {
@@ -83,6 +83,32 @@
   -o-transition: 0.5s;
   transition: 0.5s;
 }
+
+.packages_about-btn {
+  margin-top: 39px;
+  letter-spacing: 1.2px;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -ms-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+
+.packages_moreinfo-btn {
+  margin-top: 20px;
+  letter-spacing: 1.2px;
+  -webkit-transition: 0.5s ease-in-out;
+  -moz-transition: 0.5s ease-in-out;
+  -ms-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+
+.pck_moreinfo_btn {
+  background: #0080ff !important;
+  border: 1px solid #0080ff !important;
+}
+
 .about-view.packages-btn:hover {
   box-shadow: 0 5px 20px rgba(14, 15, 18, 0.3);
 }

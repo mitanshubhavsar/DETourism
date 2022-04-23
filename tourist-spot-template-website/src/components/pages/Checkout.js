@@ -39,7 +39,7 @@ function Checkout() {
       if (basket) {
         openModal();
       }
-    }, 3000);
+    }, 2000);
 
     return () => {
       openModal();
@@ -152,7 +152,10 @@ function Checkout() {
                   </div>
                 </div>
                 <div className="removeButton_orders">
-                  <div className="checkout_price">{basket[i].price}</div>
+                  <div className="checkout_price">
+                    Rs.&nbsp;
+                    {basket[i].price.toLocaleString(navigator.language)}
+                  </div>
                   <button
                     class="removeOrder-btn"
                     onClick={() => removeFromBasket(basket[i])}
