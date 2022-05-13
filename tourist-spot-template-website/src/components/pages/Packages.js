@@ -8,16 +8,27 @@ import axios from "../../axiosUsers";
 
 export default function Services() {
   const [packages, setPackages] = useState(null);
-  const [hotelState, setHotelState] = useState("Gujarat");
+  const [hotelState, setHotelState] = useState(null);
+  const [exploreStateHotels, setExploreStateHotels] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0);
   const [, dispatch] = useStateValue();
+
+  const [destinationData, setDestinationData] = useState(null);
+  const [selectedCity, setSelectedCity] = useState(null);
 
   function openModal() {
     setIsOpen(true);
+    setExploreStateHotels("Gujarat");
   }
 
   function closeModal() {
     setIsOpen(false);
+    setHotelState(null);
+    setExploreStateHotels(null);
+    setDestinationData(null);
+    setSelectedCity(null);
+    setTabIndex(0);
   }
 
   const addToBasket = (addedPacket) => {
@@ -48,6 +59,23 @@ export default function Services() {
     fetchPackages();
   }, []);
 
+  useEffect(() => {
+    async function fetchDestinations() {
+      try {
+        axios
+          .get(`/destinations/${hotelState.toLowerCase()}.json`)
+          .then((response) => {
+            setDestinationData(response.data);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    if (hotelState) {
+      fetchDestinations();
+    }
+  }, [hotelState]);
+
   return (
     <section id="pack" class="packages">
       <div class="container">
@@ -63,6 +91,13 @@ export default function Services() {
           openModal={openModal}
           closeModal={closeModal}
           hotelState={hotelState}
+          exploreStateHotels={exploreStateHotels}
+          setExploreStateHotels={setExploreStateHotels}
+          tabIndex={tabIndex}
+          setTabIndex={setTabIndex}
+          destinationData={destinationData}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
         />
         <div class="packages-content">
           <div class="row">

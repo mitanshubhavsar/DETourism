@@ -14,28 +14,27 @@ const customStyles = {
     top: "15%",
     left: "15%",
     right: "15%",
-    //overflow: "none",
-    // right: "auto",
-    // bottom: "auto",
-    // marginRight: "-50%",
-    //transform: "translate(-50%, -50%)",
   },
 };
 
 export default function TravelInfoModel(props) {
   const [{ basket, user }, dispatch] = useStateValue();
   const [hotelsData, setHotelsData] = useState(null);
+  const [packageSubtotal, setPackageSubtotal] = useState([]);
 
   const getTourInfo = (
     startTourDate,
     endTourDate,
     selectedTourDuration,
-    selectedTourMembers
+    selectedTourAdult,
+    selectedTourChild,
+    packageSubtotal
   ) => {
     if (
       startTourDate.length !== basket.length ||
       endTourDate.length !== basket.length ||
-      selectedTourMembers.length !== basket.length
+      selectedTourAdult.length !== basket.length ||
+      selectedTourChild.length !== basket.length
     ) {
       alert("Please enter all Tour Information details");
       setTabIndex(2);
@@ -47,8 +46,10 @@ export default function TravelInfoModel(props) {
             destination: basket[i].state,
             startTour: startTourDate[i],
             endTour: endTourDate[i],
-            //TourDuration: selectedTourDuration[i],
-            TourMembers: selectedTourMembers[i],
+            TourDuration: selectedTourDuration[i],
+            TourAdults: selectedTourAdult[i],
+            TourChild: selectedTourChild[i],
+            TourSubtotal: packageSubtotal[i],
           },
         });
       }
@@ -86,7 +87,36 @@ export default function TravelInfoModel(props) {
   const [startTourDate, setStartTourDate] = useState([]);
   const [endTourDate, setEndTourDate] = useState([]);
   const [selectedTourDuration, setSelectedTourDuration] = useState([]);
-  const [selectedTourMembers, setSelectedTourMembers] = useState([]);
+  const [selectedTourAdult, setSelectedTourAdult] = useState([]);
+  const [selectedTourChild, setSelectedTourChild] = useState([]);
+
+  const calculatingPackageTotal = (adultmembers, childmembers, i) => {
+    gettingCalculatedDuration(i);
+    const newArrayAdult = [...selectedTourAdult];
+    const newArrayChild = [...selectedTourChild];
+
+    if (adultmembers) {
+      newArrayAdult[i] = adultmembers;
+      setSelectedTourAdult(newArrayAdult);
+    }
+
+    if (childmembers) {
+      newArrayChild[i] = childmembers;
+      setSelectedTourChild(newArrayChild);
+    }
+
+    let newArray = [];
+    for (let i = 0; i < basket.length; i++) {
+      if (newArrayAdult[i] && newArrayChild[i]) {
+        newArray[i] =
+          newArrayAdult[i] * basket[i].price +
+          (newArrayChild[i] / 2) * basket[i].price;
+        console.log(newArray);
+        console.log(basket[i].price);
+      }
+    }
+    setPackageSubtotal(newArray);
+  };
 
   //Setting for Tour
   const settingStartTourDate = (date, i) => {
@@ -99,27 +129,14 @@ export default function TravelInfoModel(props) {
     const newArray = [...endTourDate];
     newArray[i] = date;
     setEndTourDate(newArray);
-    //gettingCalculatedDuration(i);
   };
 
   const gettingCalculatedDuration = (i) => {
     if (endTourDate[i] !== null && startTourDate[i] !== null) {
       const newArray = [...selectedTourDuration];
-      console.log(new Date(endTourDate[i]));
-      console.log(new Date(startTourDate[i]));
-      //console.log(new Date(endTourDate[i] - startTourDate[i]));
-      //newArray[i] = new Date(endTourDate[i] - startTourDate[i]).getDate();
-
-      console.log(newArray);
+      newArray[i] = new Date(endTourDate[i] - startTourDate[i]).getDate();
       setSelectedTourDuration(newArray);
-      //return new Date(endTourDate[i] - startTourDate[i]);
     }
-  };
-
-  const settingTourMembers = (members, i) => {
-    const newArray = [...selectedTourMembers];
-    newArray[i] = members;
-    setSelectedTourMembers(newArray);
   };
 
   return (
@@ -284,15 +301,16 @@ export default function TravelInfoModel(props) {
                         </div>
                       </div>
 
-                      <div class="col-lg-3 col-md-2 col-sm-5">
+                      <div class="col-lg-2 col-md-2 col-sm-5">
                         <div class="single-tab-select-box">
-                          <h2>members</h2>
+                          <h2>Adults</h2>
                           <div className="travel-input-number">
                             <input
                               class="form-control "
-                              value={selectedTourMembers[i]}
+                              value={selectedTourAdult[i]}
                               onChange={(e) =>
-                                settingTourMembers(e.target.value, i)
+                                // settingTourAdults(e.target.value, i);
+                                calculatingPackageTotal(e.target.value, null, i)
                               }
                               type="number"
                               min="1"
@@ -301,6 +319,34 @@ export default function TravelInfoModel(props) {
                           </div>
                         </div>
                       </div>
+
+                      <div class="col-lg-2 col-md-2 col-sm-5">
+                        <div class="single-tab-select-box">
+                          <h2>Children</h2>
+                          <div className="travel-input-number">
+                            <input
+                              class="form-control "
+                              value={selectedTourChild[i]}
+                              onChange={(e) => {
+                                calculatingPackageTotal(
+                                  null,
+                                  e.target.value,
+                                  i
+                                );
+                              }}
+                              type="number"
+                              min="0"
+                              max="50"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      {packageSubtotal[i] && (
+                        <div className="mt-3 d-flex">
+                          <div className="ml-4 mr-2">Subtotal:</div>
+                          <div>Rs. {packageSubtotal[i]}</div>
+                        </div>
+                      )}
                     </div>
                   </>
                 );
@@ -316,7 +362,9 @@ export default function TravelInfoModel(props) {
                         startTourDate,
                         endTourDate,
                         selectedTourDuration,
-                        selectedTourMembers
+                        selectedTourAdult,
+                        selectedTourChild,
+                        packageSubtotal
                       );
                     }}
                   >

@@ -71,6 +71,11 @@ function Orders() {
                           starSpacing="1px"
                           className="orders_info"
                         />
+                        <div className="order_package_price mb-3">
+                          <div className="mr-3">Package Price:</div>
+                          Rs.&nbsp;{" "}
+                          {des.price.toLocaleString(navigator.language)}
+                        </div>
                       </div>
                       <div className="Tour_info_orders">
                         <div className="Tour_info_orders_heading mt-2">
@@ -91,14 +96,27 @@ function Orders() {
                           </div>
                         </div>
                         <div className="Tour_info_members">
-                          <div className="mr-2">Members:</div>
-                          <div>{item.tourInfo[k].TourMembers}</div>
+                          <div className="mr-1">Duration:</div>
+                          <div>{item.tourInfo[k].TourDuration}</div>
+                          <div className="ml-4 mr-1">Adults:</div>
+                          <div>{item.tourInfo[k].TourAdults}</div>
+                          <div className="ml-2 mr-1">Children:</div>
+                          <div>{item.tourInfo[k].TourChild}</div>
+                        </div>
+                        <div className="Tour_info_subtotal">
+                          <div className="">Tour Subtotal:</div>
+                          <div className="ml-2">
+                            Rs.&nbsp;
+                            {item.tourInfo[k].TourSubtotal.toLocaleString(
+                              navigator.language
+                            )}
+                          </div>
                         </div>
                       </div>
 
                       <div className="order_info_Ava_hotels">
                         <div className="order_info_Ava_hotels_heading mt-3">
-                          Available Hotels
+                          Included Hotels
                         </div>
                         {Object.keys(item.hotelsInfo[k].availableHotels).map(
                           (hotel, l) => {
@@ -123,11 +141,6 @@ function Orders() {
                             );
                           }
                         )}
-                      </div>
-
-                      <div className="order_package_price mt-3">
-                        <div className="mr-3">Package Price:</div>
-                        Rs.&nbsp; {des.price.toLocaleString(navigator.language)}
                       </div>
                     </div>
                   </div>

@@ -4,6 +4,7 @@ import "./Checkout.css";
 import StarRatings from "react-star-ratings";
 import { useStateValue } from "../../ContextAPI/StateProvider";
 import { getBasketTotal } from "../../ContextAPI/reducer";
+import { getOverallTourTotal } from "../../ContextAPI/reducer";
 import { db } from "../../firebase";
 import firebase from "firebase/compat/app";
 import TravelInfoModel from "../TravelInfoModel";
@@ -57,7 +58,7 @@ function Checkout() {
             .collection("orders")
             .add({
               basket: basket,
-              amount: getBasketTotal(basket),
+              amount: getOverallTourTotal(tourInfo),
               tourInfo: tourInfo,
               hotelsInfo: hotelsInfo,
               orderedAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -168,8 +169,8 @@ function Checkout() {
           })}
       </div>
       <div className="checkout_SubTotal">
-        Your Cart 's has total {basket.length} items with a Subtotal of{" "}
-        {getBasketTotal(basket)}
+        Your Cart 's has total {basket.length} items with a Overall Subtotal of{" "}
+        {tourInfo ? getOverallTourTotal(tourInfo) : "0"}
       </div>
 
       <div className="row align-items-center">

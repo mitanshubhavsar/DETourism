@@ -64,6 +64,12 @@
   display: flex;
 }
 
+.Tour_info_orders .Tour_info_subtotal {
+  display: flex;
+  font-size: 1.1rem;
+  align-items: center;
+}
+
 .order_info_Ava_hotels {
   line-height: 25px;
 }
@@ -78,7 +84,7 @@
 }
 
 .orders_details .order_package_price {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
 }

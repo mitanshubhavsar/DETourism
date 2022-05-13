@@ -13,18 +13,12 @@ const customStyles = {
     top: "15%",
     left: "15%",
     right: "15%",
-    //overflow: "none",
-    // right: "auto",
-    // bottom: "auto",
-    // marginRight: "-50%",
-    //transform: "translate(-50%, -50%)",
   },
 };
 
 export default function MoreInfoModel(props) {
   const [{ basket, user }, dispatch] = useStateValue();
-  const [destinationData, setDestinationData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null);
+
   const [hotelsData, setHotelsData] = useState(null);
 
   useEffect(() => {
@@ -37,29 +31,7 @@ export default function MoreInfoModel(props) {
       }
     }
     fetchHotels();
-
-    async function fetchDestinations() {
-      try {
-        axios
-          .get(`/destinations/${props.hotelState.toLowerCase()}.json`)
-          .then((response) => {
-            setDestinationData(response.data);
-            console.log(response.data);
-            console.log("my bitch");
-          });
-      } catch (error) {
-        console.error(error);
-        console("fuck you");
-      }
-    }
-    if (props.hotelState) {
-      fetchDestinations();
-    }
-  }, [props.hotelState]);
-
-  const [tabIndex, setTabIndex] = useState(0);
-
-  const [exploreStateHotels, setExploreStateHotels] = useState("Gujarat");
+  }, []);
 
   return (
     <div>
@@ -72,23 +44,23 @@ export default function MoreInfoModel(props) {
         <div className="travelinfo_mod_close_btn" onClick={props.closeModal}>
           <i class="fa fa-times" aria-hidden="true"></i>
         </div>
-        <Tabs selectedIndex={tabIndex}>
+        <Tabs selectedIndex={props.tabIndex}>
           <TabList className="model-tabs">
-            <Tab onClick={() => setTabIndex(0)}>
+            <Tab onClick={() => props.setTabIndex(0)}>
               <div className="model-tabs-panel">
                 <i class="fa fa-building mr-2"></i>
                 package Hotels
               </div>
             </Tab>
 
-            <Tab onClick={() => setTabIndex(1)}>
+            <Tab onClick={() => props.setTabIndex(1)}>
               <div className="model-tabs-panel">
                 <i class="fa fa-search mr-2" aria-hidden="true"></i>
                 Explore Hotels
               </div>
             </Tab>
 
-            <Tab onClick={() => setTabIndex(2)}>
+            <Tab onClick={() => props.setTabIndex(2)}>
               <div className="model-tabs-panel">
                 <i class="fa fa-building mr-2"></i>
                 destinations
@@ -106,6 +78,7 @@ export default function MoreInfoModel(props) {
             </div>
 
             {hotelsData &&
+              props.hotelState &&
               Object.keys(hotelsData[props.hotelState]).map((item) => {
                 return (
                   <div className="hotels_card">
@@ -173,8 +146,10 @@ export default function MoreInfoModel(props) {
                     <div class="travel-select-icon">
                       <select
                         class="form-control "
-                        value={exploreStateHotels}
-                        onChange={(e) => setExploreStateHotels(e.target.value)}
+                        value={props.exploreStateHotels}
+                        onChange={(e) =>
+                          props.setExploreStateHotels(e.target.value)
+                        }
                       >
                         <option selected="true" disabled="disabled">
                           Enter State
@@ -190,58 +165,66 @@ export default function MoreInfoModel(props) {
               </div>
 
               {hotelsData &&
-                Object.keys(hotelsData[exploreStateHotels]).map((item) => {
-                  return (
-                    <div className="hotels_card">
-                      <div className="hotels_img">
-                        <img
-                          src={
-                            require(`../assets/images/hotels/${hotelsData[exploreStateHotels][item].image}`)
-                              .default
-                          }
-                          alt="hotels-place"
-                          height="155px"
-                          width="230px"
-                        />
-                      </div>
-                      <div className="hotels_details">
-                        <div className="hotels_title">
-                          <div className="hotels_name">
-                            {hotelsData[exploreStateHotels][item].name}
-                          </div>
-                          <div className="hotels_city ml-5">
-                            {hotelsData[exploreStateHotels][item].city}
-                          </div>
+                props.exploreStateHotels &&
+                Object.keys(hotelsData[props.exploreStateHotels]).map(
+                  (item) => {
+                    return (
+                      <div className="hotels_card">
+                        <div className="hotels_img">
+                          <img
+                            src={
+                              require(`../assets/images/hotels/${
+                                hotelsData[props.exploreStateHotels][item].image
+                              }`).default
+                            }
+                            alt="hotels-place"
+                            height="155px"
+                            width="230px"
+                          />
                         </div>
-                        <div className="hotelss_info">
-                          <div>
-                            {hotelsData[exploreStateHotels][item].intro}
+                        <div className="hotels_details">
+                          <div className="hotels_title">
+                            <div className="hotels_name">
+                              {hotelsData[props.exploreStateHotels][item].name}
+                            </div>
+                            <div className="hotels_city ml-5">
+                              {hotelsData[props.exploreStateHotels][item].city}
+                            </div>
                           </div>
-                          <div style={{ marginTop: "10px" }}>
-                            <i class="fa fa-angle-right mr-2"></i>
-                            Amenities: <br />
-                            {hotelsData[exploreStateHotels][item].amenities}
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <i class="fa fa-angle-right mr-2"></i>
-                            <div className="mr-3">Rating:</div>
-                            <StarRatings
-                              rating={
-                                hotelsData[exploreStateHotels][item].rating
+                          <div className="hotelss_info">
+                            <div>
+                              {hotelsData[props.exploreStateHotels][item].intro}
+                            </div>
+                            <div style={{ marginTop: "10px" }}>
+                              <i class="fa fa-angle-right mr-2"></i>
+                              Amenities: <br />
+                              {
+                                hotelsData[props.exploreStateHotels][item]
+                                  .amenities
                               }
-                              starRatedColor="yellow"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="24px"
-                              starSpacing="1px"
-                              className="orders_info"
-                            />
+                            </div>
+                            <div className="d-flex align-items-center">
+                              <i class="fa fa-angle-right mr-2"></i>
+                              <div className="mr-3">Rating:</div>
+                              <StarRatings
+                                rating={
+                                  hotelsData[props.exploreStateHotels][item]
+                                    .rating
+                                }
+                                starRatedColor="yellow"
+                                numberOfStars={5}
+                                name="rating"
+                                starDimension="24px"
+                                starSpacing="1px"
+                                className="orders_info"
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  }
+                )}
             </div>
           </TabPanel>
           <TabPanel>
@@ -252,14 +235,14 @@ export default function MoreInfoModel(props) {
                   <div class="travel-select-icon">
                     <select
                       class="form-control "
-                      value={selectedCity}
-                      onChange={(e) => setSelectedCity(e.target.value)}
+                      value={props.selectedCity}
+                      onChange={(e) => props.setSelectedCity(e.target.value)}
                     >
                       <option selected="true" disabled="disabled">
                         enter your destination city
                       </option>
-                      {destinationData &&
-                        Object.keys(destinationData).map((item, i) => {
+                      {props.destinationData &&
+                        Object.keys(props.destinationData).map((item, i) => {
                           return (
                             <option selected="true" value={item}>
                               {item}
@@ -275,31 +258,34 @@ export default function MoreInfoModel(props) {
             <section id="blog" class="moreInfo_Des">
               <div class="container">
                 <div class="blog-details">
-                  {selectedCity ? (
+                  {props.selectedCity ? (
                     <div class="blog-content">
                       <div class="row">
-                        {selectedCity &&
-                          Object.keys(destinationData[selectedCity]).map(
-                            (item, i) => {
-                              return (
-                                <div class="col-sm-4 col-md-4">
-                                  <div class="thumbnail">
-                                    <h2>{item}</h2>
-                                    <div class="thumbnail-img">
-                                      <img
-                                        src={
-                                          require(`../assets/images/${destinationData[selectedCity][item].image}`)
-                                            .default
-                                        }
-                                        alt="blog-img"
-                                      />
-                                      <div class="thumbnail-img-overlay"></div>
-                                    </div>
+                        {props.selectedCity &&
+                          Object.keys(
+                            props.destinationData[props.selectedCity]
+                          ).map((item, i) => {
+                            return (
+                              <div class="col-sm-4 col-md-4">
+                                <div class="thumbnail">
+                                  <h2>{item}</h2>
+                                  <div class="thumbnail-img">
+                                    <img
+                                      src={
+                                        require(`../assets/images/${
+                                          props.destinationData[
+                                            props.selectedCity
+                                          ][item].image
+                                        }`).default
+                                      }
+                                      alt="blog-img"
+                                    />
+                                    <div class="thumbnail-img-overlay"></div>
                                   </div>
                                 </div>
-                              );
-                            }
-                          )}
+                              </div>
+                            );
+                          })}
                       </div>
                     </div>
                   ) : (
