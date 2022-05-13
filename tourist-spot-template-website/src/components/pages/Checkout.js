@@ -170,7 +170,9 @@ function Checkout() {
       </div>
       <div className="checkout_SubTotal">
         Your Cart 's has total {basket.length} items with a Overall Subtotal of{" "}
-        {tourInfo ? getOverallTourTotal(tourInfo) : "0"}
+        {tourInfo
+          ? getOverallTourTotal(tourInfo).toLocaleString(navigator.language)
+          : "0"}
       </div>
 
       <div className="row align-items-center">

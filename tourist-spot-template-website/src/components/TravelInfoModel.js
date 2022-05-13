@@ -342,9 +342,14 @@ export default function TravelInfoModel(props) {
                         </div>
                       </div>
                       {packageSubtotal[i] && (
-                        <div className="mt-3 d-flex">
+                        <div className="travelInfo_subtotal mt-3 d-flex">
                           <div className="ml-4 mr-2">Subtotal:</div>
-                          <div>Rs. {packageSubtotal[i]}</div>
+                          <div>
+                            Rs.{" "}
+                            {packageSubtotal[i].toLocaleString(
+                              navigator.language
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>
