@@ -170,6 +170,7 @@ function Checkout() {
       </div>
       <div className="checkout_SubTotal">
         Your Cart 's has total {basket.length} items with a Overall Subtotal of{" "}
+        Rs.&nbsp;
         {tourInfo
           ? getOverallTourTotal(tourInfo).toLocaleString(navigator.language)
           : "0"}
