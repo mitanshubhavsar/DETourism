@@ -62,7 +62,7 @@ export default function MoreInfoModel(props) {
 
             <Tab onClick={() => props.setTabIndex(2)}>
               <div className="model-tabs-panel">
-                <i class="fa fa-building mr-2"></i>
+                <i class="fa fa-tree mr-2"></i>
                 destinations
               </div>
             </Tab>

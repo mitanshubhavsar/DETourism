@@ -160,7 +160,7 @@ export default function TravelInfoModel(props) {
             </Tab>
             <Tab onClick={() => setTabIndex(1)}>
               <div className="model-tabs-panel">
-                <i class="fa fa-tree mr-2"></i>
+                <i class="fa fa-suitcase mr-2" aria-hidden="true"></i>
                 Tours
               </div>
             </Tab>
