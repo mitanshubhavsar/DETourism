@@ -111,7 +111,7 @@ function Navbar() {
                     className="nav-links"
                     onClick={closeMobileMenu}
                   >
-                    Orders
+                    Bookings
                   </Link>
                 </li>
               </>

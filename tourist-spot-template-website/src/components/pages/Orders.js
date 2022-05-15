@@ -33,7 +33,7 @@ function Orders() {
   return (
     <div className="container">
       <div className="order_heading">
-        <h3>Orders</h3>
+        <h3>Bookings</h3>
       </div>
       {orderData &&
         orderData.map((item, i) => {

@@ -35,8 +35,9 @@
 }
 
 .signupPage {
-  background-image: url('../../assets/images/airplane.jpg');
+  background-image: url("../../assets/images/airplane.jpg");
   background-size: cover;
+  height: 88vh;
 }
 
 .grey-overlay-signup {

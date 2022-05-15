@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import './SignUp.css';
-import { auth } from '../../firebase';
-import axios from '../../axiosUsers';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import "./SignUp.css";
+import { auth } from "../../firebase";
+import axios from "../../axiosUsers";
 
 function Signup() {
   const history = useHistory();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [destination, setDestination] = useState('Philippines');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [destination, setDestination] = useState("Philippines");
 
   const signupUser = (e) => {
     e.preventDefault();
@@ -17,8 +17,8 @@ function Signup() {
       .signInWithEmailAndPassword(email, password)
       .then((auth) => {
         if (auth) {
-          history.push('/');
-          alert('login Successful');
+          history.push("/");
+          alert("login Successful");
         }
       })
       .catch((error) => alert(error.message));
@@ -32,7 +32,7 @@ function Signup() {
       Destination: destination,
     };
     axios
-      .post('/users.json', users)
+      .post("/users.json", users)
       .then((response) => {
         console.log(response);
       })
@@ -44,18 +44,18 @@ function Signup() {
       .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
         if (auth) {
-          history.push('/');
-          alert('Registration Successful');
+          history.push("/");
+          alert("Registration Successful");
         }
       })
       .catch((error) => alert(error.message));
   };
 
   return (
-    <div class="row row-mt-15em signupPage">
+    <div class="signupPage">
       <div class="grey-overlay-signup signUpHead">
         <div class="col-md-7 mt-text quote" data-animate-effect="fadeInUp">
-          <h1 class="signupquote">Planing Trip To Anywhere in The World?</h1>
+          <h1 class="signupquote">Planning Trip To Anywhere in The World?</h1>
         </div>
         <div
           class="col-md-4 col-md-push-1 signupBox"
@@ -119,9 +119,6 @@ function Signup() {
                           <option value="Tamil Nadu">Tamil Nadu</option>
                           <option value="Maharastra">Maharastra</option>
                           <option value="Uttar Pradesh">Uttar Pradesh</option>
-                          <option value="Jammu and Kashmir">
-                            Jammu and Kashmir
-                          </option>
                           <option value="Rajasthan">Rajasthan</option>
                         </select>
                       </div>
