@@ -9,11 +9,14 @@ import { db } from "../../firebase";
 import firebase from "firebase/compat/app";
 import TravelInfoModel from "../TravelInfoModel";
 import editFormIcon from "../../assets/images/editform_icon.png";
+import { PaymentGateway } from "../PaymentGateway";
 
 function Checkout() {
   const [{ basket, user, tourInfo, hotelsInfo }, dispatch] = useStateValue();
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedHotelsData, setSelectedHotelsData] = useState(null);
+  const [IsOpenPaymentModel, setIsOpenPaymentModel] = useState(false);
+
   const history = useHistory();
 
   function openModal() {
@@ -27,6 +30,13 @@ function Checkout() {
     setIsOpen(false);
   }
 
+  function openPaymentModal() {
+    setIsOpenPaymentModel(true);
+  }
+
+  function closePaymentModal() {
+    setIsOpenPaymentModel(false);
+  }
   const filterHotels = () => {
     const selectedHotels = [];
     basket.forEach((element) => {
@@ -112,6 +122,12 @@ function Checkout() {
         closeModal={closeModal}
         selectedHotelsData={selectedHotelsData}
       />
+      <PaymentGateway
+        modalIsOpen={IsOpenPaymentModel}
+        openModal={openPaymentModal}
+        closeModal={closePaymentModal}
+        bookOrder={bookOrder}
+      />
       {basket.length === 0 ? (
         <div style={{ fontSize: "30px" }}>Your Cart is Empty</div>
       ) : null}
@@ -149,7 +165,7 @@ function Checkout() {
                       starSpacing="1px"
                       className="checkout_info"
                     />
-                    <div>{basket[i].reviews} Review</div>
+                    <div>{Object.keys(basket[i].reviews).length} Reviews</div>
                   </div>
                 </div>
                 <div className="removeButton_orders">
@@ -192,7 +208,10 @@ function Checkout() {
         </button>
       </div>
 
-      <button className="checkout_proceed_btn" onClick={bookOrder}>
+      <button
+        className="checkout_proceed_btn"
+        onClick={() => openPaymentModal()}
+      >
         Proceed to Pay
       </button>
     </div>

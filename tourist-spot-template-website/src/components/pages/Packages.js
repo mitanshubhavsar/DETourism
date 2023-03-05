@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
 import MoreInfoModel from "../MoreInfoModel";
+import ReviewModel from "../ReviewModel";
 import { useStateValue } from "../../ContextAPI/StateProvider";
 import "./Packages.css";
 
@@ -11,6 +12,8 @@ export default function Services() {
   const [hotelState, setHotelState] = useState(null);
   const [exploreStateHotels, setExploreStateHotels] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [reviewModalIsOpen, setReviewModelIsOpen] = useState(false);
+  const [selectedReviewState, setSelectedReviewState] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
   const [, dispatch] = useStateValue();
 
@@ -29,6 +32,14 @@ export default function Services() {
     setDestinationData(null);
     setSelectedCity(null);
     setTabIndex(0);
+  }
+
+  function openReviewModal(state) {
+    setReviewModelIsOpen(true);
+  }
+
+  function closeReviewModal() {
+    setReviewModelIsOpen(false);
   }
 
   const addToBasket = (addedPacket) => {
@@ -99,82 +110,104 @@ export default function Services() {
           selectedCity={selectedCity}
           setSelectedCity={setSelectedCity}
         />
+
         <div class="packages-content">
           <div class="row">
+            {selectedReviewState ? (
+              <ReviewModel
+                reviewModalIsOpen={reviewModalIsOpen}
+                openReviewModal={openReviewModal}
+                closeReviewModal={closeReviewModal}
+                selectedReviewState={selectedReviewState}
+                packages={packages}
+              />
+            ) : null}
+
             {packages &&
               Object.keys(packages).map((item, i) => {
                 return (
-                  <div class="col-md-4 col-sm-6">
-                    <div class="single-package-item">
-                      <img
-                        src={
-                          require(`../../assets/images/${packages[item].image}`)
-                            .default
-                        }
-                        alt="package-place"
-                      />
-                      <div class="single-package-item-txt">
-                        <h3>
-                          {packages[item].state}{" "}
-                          <span style={{ marginLeft: "32px" }}>
-                            Rs.&nbsp;
-                            {packages[item].price.toLocaleString(
-                              navigator.language
-                            )}
-                          </span>
-                        </h3>
-                        <div class="packages-para">
-                          <p>
-                            <span>
-                              <i class="fa fa-angle-right"></i>{" "}
-                              {packages[item].days} days {packages[item].nights}{" "}
-                              nights
+                  <>
+                    <div class="col-md-4 col-sm-6">
+                      <div class="single-package-item">
+                        <img
+                          src={
+                            require(`../../assets/images/${packages[item].image}`)
+                              .default
+                          }
+                          alt="package-place"
+                        />
+                        <div class="single-package-item-txt">
+                          <h3>
+                            {packages[item].state}{" "}
+                            <span style={{ marginLeft: "32px" }}>
+                              Rs.&nbsp;
+                              {packages[item].price.toLocaleString(
+                                navigator.language
+                              )}
                             </span>
-                            <i class="fa fa-angle-right"></i> 5 star
-                            accomodation
-                          </p>
-                          <p>
-                            <span>
-                              <i class="fa fa-angle-right"></i> transportation
-                            </span>
-                            <i class="fa fa-angle-right"></i> food facilities
-                          </p>
-                        </div>
-                        <div class="packages-review">
-                          <p>
-                            <StarRatings
-                              rating={packages[item].accomodation}
-                              starRatedColor="yellow"
-                              numberOfStars={5}
-                              name="rating"
-                              starDimension="24px"
-                              starSpacing="1px"
-                            />
-                            <span>{packages[item].reviews} review</span>
-                          </p>
-                        </div>
-                        <div class="packages_about-btn">
-                          <button
-                            class="about-view packages-btn"
-                            onClick={() => addToBasket(packages[item])}
-                          >
-                            book now
-                          </button>
-                        </div>
-                        <div class="packages_moreinfo-btn">
-                          <button
-                            class="about-view packages-btn pck_moreinfo_btn"
-                            onClick={() => {
-                              setHotelState(packages[item].state);
-                              openModal();
-                            }}
-                          >
-                            more info
-                          </button>
+                          </h3>
+                          <div class="packages-para">
+                            <p>
+                              <span>
+                                <i class="fa fa-angle-right"></i>{" "}
+                                {packages[item].days} days{" "}
+                                {packages[item].nights} nights
+                              </span>
+                              <i class="fa fa-angle-right"></i> 5 star
+                              accomodation
+                            </p>
+                            <p>
+                              <span>
+                                <i class="fa fa-angle-right"></i> transportation
+                              </span>
+                              <i class="fa fa-angle-right"></i> food facilities
+                            </p>
+                          </div>
+                          <div class="packages-review">
+                            <p>
+                              <StarRatings
+                                rating={packages[item].accomodation}
+                                starRatedColor="yellow"
+                                numberOfStars={5}
+                                name="rating"
+                                starDimension="24px"
+                                starSpacing="1px"
+                              />
+                              <span
+                                onClick={() => {
+                                  setSelectedReviewState(packages[item].state);
+                                  openReviewModal();
+                                }}
+                                className="reviews_btn"
+                              >
+                                {Object.keys(packages[item].reviews).length}{" "}
+                                reviews
+                              </span>
+                            </p>
+                          </div>
+                          <div class="packages_about-btn">
+                            <button
+                              class="about-view packages-btn"
+                              onClick={() => addToBasket(packages[item])}
+                            >
+                              book now
+                            </button>
+                          </div>
+                          <div class="packages_moreinfo-btn">
+                            <button
+                              class="about-view packages-btn pck_moreinfo_btn"
+                              onClick={() => {
+                                setHotelState(packages[item].state);
+                                openModal();
+                              }}
+                            >
+                              more info
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 );
               })}
           </div>
