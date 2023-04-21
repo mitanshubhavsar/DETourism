@@ -3,6 +3,7 @@ import "./Orders.css";
 import StarRatings from "react-star-ratings";
 import { db } from "../../firebase";
 import { useStateValue } from "../../ContextAPI/StateProvider";
+import { Bookingpdf } from "../Bookingpdf";
 
 function Orders() {
   const [{ user }] = useStateValue();
@@ -39,6 +40,14 @@ function Orders() {
         orderData.map((item, i) => {
           return (
             <div className="orders_container">
+              <div className="d-flex justify-content-end">
+                <button
+                  className="booking_downloadbtn"
+                  onClick={() => Bookingpdf(orderData, i)}
+                >
+                  Download Report
+                </button>
+              </div>
               {item.basket.map((des, k) => {
                 return (
                   <div className="orders_card">
@@ -53,7 +62,7 @@ function Orders() {
                       />
                     </div>
                     <div className="orders_details">
-                      <div className="orders_title">{des.state}</div>
+                      <div className="orders_title">{des.state} </div>
                       <div className="orders_info">
                         <div style={{ display: "flex" }}>
                           <div style={{ marginRight: "27px" }}>
