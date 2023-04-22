@@ -10,6 +10,7 @@ import firebase from "firebase/compat/app";
 import TravelInfoModel from "../TravelInfoModel";
 import editFormIcon from "../../assets/images/editform_icon.png";
 import { PaymentGateway } from "../PaymentGateway";
+import { SendEmail } from "../SendEmail";
 
 function Checkout() {
   const [{ basket, user, tourInfo, hotelsInfo }, dispatch] = useStateValue();
@@ -75,6 +76,7 @@ function Checkout() {
             })
             .then(() => {
               alert("Order Booked Successfully");
+              SendEmail(basket, tourInfo, user);
               emptyTheBasket();
               history.push("/");
             })
